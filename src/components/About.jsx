@@ -1,59 +1,125 @@
-import React from 'react'
-import img1 from '../assets/images/about1.jpeg'
-import img2 from '../assets/images/about2.webp'
-import { FaAward } from 'react-icons/fa'
-import { SlCalender } from 'react-icons/sl'
+import React, { useEffect, useState } from "react";
+import { FaAward } from "react-icons/fa";
+import { SlCalender } from "react-icons/sl";
+import axios from "axios";
+import { motion } from "framer-motion";
 
 const About = () => {
-    return (
-        <section className="about py-5" id="about">
-            <div className="container">
-                <div className="row">
-                    <div className="col-lg-6">
-                        <div className="images-container position-relative">
-                            <img className="about-img1" src={img1} alt="about-img" width="350px" />
-                            <img className="about-img2" src={img2} alt="about-img" width="300px" />
-                        </div>
-                    </div>
-                    <div className="col-lg-6">
-                        <div>
-                            <p className="text-theme"><small>About Us</small></p>
-                            <h2 className="mt-3">Lorem ipsum dolor sit amet <br /> consectetur adipisicing.</h2>
-                            <p className="text-secondary mt-3">Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                                Voluptate
-                                maxime alias blanditiis cum nihil assumenda dignissimos quam quae, voluptatibus fugiat
-                                eveniet delectus est nulla inventore deleniti, sapiente ex minus neque!</p>
+  const [aboutData, setAboutData] = useState([]);
 
-                            <div className="mt-4">
-                                <div className="d-flex gap-2">
-                                    <div>
-                                        <FaAward className='text-theme h4' />
-                                    </div>
-                                    <div>
-                                        <h6 className="mb-0">20+ Winnging Award</h6>
-                                        <p className="text-secondary"><small>Lorem ipsum dolor sit amet consectetur adipisicing
-                                            elit.
-                                            Quaerat, consectetur.</small></p>
-                                    </div>
-                                </div>
-                                <div className="d-flex gap-2 my-3">
-                                    <div>
-                                        <SlCalender className='h4 text-theme' />
-                                    </div>
-                                    <div>
-                                        <h6 className="mb-0">20+ Winnging Award</h6>
-                                        <p className="text-secondary"><small>Lorem ipsum dolor sit amet consectetur adipisicing
-                                            elit.
-                                            Quaerat, consectetur.</small></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  const serverPORT = "http://localhost:8000";
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8000/api/getAbout")
+      .then((res) => {
+        console.log(setAboutData(res.data[0]));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  const animation1 = {
+    initial: { x: "-100%", opacity: 0 },
+    whileInView: { x: "0", opacity: 1 },
+    transition: { duration: 0.5 },
+  };
+  const animation2 = {
+    initial: { y: "+100%", opacity: 0 },
+    whileInView: { y: "0", opacity: 1 },
+    transition: { duration: 0.8 },
+  };
+
+  return (
+    <section className="about py-5" id="about">
+      <div className="container">
+        <div className="row">
+          <div className="col-lg-6">
+            <div className="images-container position-relative">
+              <motion.img
+                {...animation1}
+                transition={{ duration: 0.5 }}
+                className="about-img1"
+                src={`${serverPORT}${aboutData.mainImage}`}
+                alt="about-img"
+                width="350px"
+              />
+              <motion.img
+                {...animation1}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className="about-img2"
+                src={`${serverPORT}${aboutData.subImage}`}
+                alt="about-img"
+                width="300px"
+              />
             </div>
-        </section>
-    )
-}
+          </div>
+          <div className="col-lg-6">
+            <div>
+              <p className="text-theme">
+                <small>About Us</small>
+              </p>
+              <motion.h2
+                {...animation2}
+                transition={{ duration: 0.8 }}
+                className="mt-3"
+              >
+                {aboutData.heading}
+              </motion.h2>
 
-export default About
+              <motion.p
+                {...animation2}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                className="text-secondary mt-3"
+              >
+                {aboutData.paragraph}
+              </motion.p>
+
+              <div className="mt-4">
+                <motion.div
+                  {...animation2}
+                  transition={{ duration: 0.8, delay: 0.7 }}
+                  className="d-flex gap-2"
+                >
+                  <div>
+                    <FaAward className="text-theme h4" />
+                  </div>
+                  <div>
+                    <h6 className="mb-0">20+ Winnging Award</h6>
+                    <p className="text-secondary">
+                      <small>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Quaerat, consectetur.
+                      </small>
+                    </p>
+                  </div>
+                </motion.div>
+                <motion.div
+                  {...animation2}
+                  transition={{ duration: 0.8, delay: 1 }}
+                  className="d-flex gap-2 my-3"
+                >
+                  <div>
+                    <SlCalender className="h4 text-theme" />
+                  </div>
+                  <div>
+                    <h6 className="mb-0">20+ Winnging Award</h6>
+                    <p className="text-secondary">
+                      <small>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Quaerat, consectetur.
+                      </small>
+                    </p>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default About;

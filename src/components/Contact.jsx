@@ -1,13 +1,51 @@
 import React, { useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Contact = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [subject, setSubject] = useState("");
-  const [comment, setComment] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    subject: "",
+    comment: "",
+  });
 
-  console.log(name, email, phone, subject, comment);
+  // Handler for input changes
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  // Form submission handler
+  const submitHandle = async (e) => {
+    e.preventDefault(); // Prevent default form submission
+    try {
+      // Send the form data to the backend
+      const response = await axios.post(
+        "http://localhost:8000/api/cutomers/getcontact",
+        formData
+      );
+      console.log("Form submitted successfully:", response.data);
+
+      // Optionally clear the form after submission
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        subject: "",
+        comment: "",
+      });
+
+      toast.success(`${formData.name} Your info has been sent.`);
+    } catch (err) {
+      console.log(
+        "Form Submit Error:",
+        err.response ? err.response.data : err.message
+      );
+      toast.error(err.response.data.message);
+    }
+  };
 
   return (
     <section className="contact py-5 section-devider" id="contact">
@@ -30,7 +68,7 @@ const Contact = () => {
         <div className="d-flex">
           <div className="card w-100">
             <div className="card-body">
-              <form className="p-5">
+              <form className="p-5" onSubmit={submitHandle}>
                 <div className="row">
                   <div className="col-lg-6">
                     <div className="mb-3 w-100">
@@ -43,8 +81,9 @@ const Contact = () => {
                         id="name"
                         placeholder="Enter Full Name..."
                         name="name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        required
                       />
                     </div>
                     <div className="mb-3 w-100">
@@ -55,9 +94,11 @@ const Contact = () => {
                         type="text"
                         className="form-control"
                         id="phone"
+                        name="phone"
                         placeholder="Enter Phone Number..."
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        required
                       />
                     </div>
                   </div>
@@ -70,9 +111,10 @@ const Contact = () => {
                         type="email"
                         className="form-control"
                         id="email"
+                        name="email"
                         placeholder="Enter Email..."
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        value={formData.email}
+                        onChange={handleInputChange}
                       />
                     </div>
                     <div className="mb-3 w-100">
@@ -83,9 +125,11 @@ const Contact = () => {
                         type="text"
                         className="form-control"
                         id="subject"
+                        name="subject"
                         placeholder="Enter Subject..."
-                        value={subject}
-                        onChange={(e) => setSubject(e.target.value)}
+                        value={formData.subject}
+                        onChange={handleInputChange}
+                        required
                       />
                     </div>
                   </div>
@@ -95,8 +139,9 @@ const Contact = () => {
                     className="form-control"
                     placeholder="Leave a comment here"
                     id="floatingTextarea"
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
+                    name="comment"
+                    value={formData.comment}
+                    onChange={handleInputChange}
                   ></textarea>
                   <label htmlFor="floatingTextarea">Comments</label>
                 </div>

@@ -1,7 +1,9 @@
 :root {
-  --lightTheme: #cfa02e;
-  --theme: #2f2c26;
+  --primaryColor: #cfa02e;
+  --secondaryColor: #2f2c26;
   --white: #fff;
+  --heroBanner: url(../images/img1.jpg);
+  --secondaryBanner: url(../images/img1.jpg);
 }
 
 a {
@@ -20,11 +22,15 @@ a {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: var(--lightTheme);
+  background-color: var(--primaryColor);
 }
 
 ::-webkit-scrollbar-track {
-  background-color: var(--theme);
+  background-color: var(--secondaryColor);
+}
+
+.text-theme {
+  color: var(--primaryColor);
 }
 
 ul {
@@ -45,12 +51,12 @@ h6 {
   font-family: ui-monospace;
 }
 
-.text-theme {
-  color: var(--lightTheme);
+.text-secondaryColor {
+  color: var(--primaryColor);
 }
 
 .btn.btn-primary {
-  background-color: var(--lightTheme);
+  background-color: var(--primaryColor);
   color: var(--white);
   letter-spacing: 2px;
   margin: 0 10px;
@@ -62,7 +68,7 @@ h6 {
 
 .btn.btn-light {
   background-color: var(--white);
-  color: var(--lightTheme);
+  color: var(--primaryColor);
   letter-spacing: 2px;
   margin: 0 10px;
   border: none;
@@ -74,7 +80,7 @@ h6 {
 .top-nav {
   width: 80%;
   margin: auto;
-  background: var(--lightTheme);
+  background: var(--primaryColor);
   color: var(--white);
   font-weight: 200;
   border-radius: 0 0 30px 30px;
@@ -99,7 +105,7 @@ nav.navbar {
 
 .conditional-nav {
   top: 0 !important;
-  background-color: var(--theme) !important;
+  background-color: var(--secondaryColor) !important;
   transition: 0.4s all;
 }
 
@@ -109,7 +115,7 @@ nav .nav-link,
 }
 
 .carousel-item-img {
-  background-image: url(../images/img1.jpg);
+  background-image: var(--heroBanner);
   height: 550px;
   width: 100%;
   background-repeat: no-repeat;
@@ -136,7 +142,7 @@ nav .nav-link,
 }
 
 .about-img1 {
-  border: 5px solid var(--theme);
+  border: 5px solid var(--secondaryColor);
   border-radius: 0 50px 0 50px;
 }
 
@@ -144,7 +150,7 @@ nav .nav-link,
   position: absolute;
   bottom: 0;
   right: 100px;
-  border: 5px solid var(--theme);
+  border: 5px solid var(--secondaryColor);
 }
 
 .carousel-indicators {
@@ -153,7 +159,7 @@ nav .nav-link,
 }
 
 .carousel-indicators [data-bs-target] {
-  background: var(--theme);
+  background: var(--secondaryColor);
   border-radius: 100%;
   height: 0px;
   width: 20px;
@@ -162,11 +168,25 @@ nav .nav-link,
 // Serives section
 .services .card {
   transition: 0.4s all;
+  max-height: 400px;
+  min-height: 400px;
+  overflow: hidden;
 }
 
 .services .card:hover {
   transition: 0.4s all;
   box-shadow: 0 0 10px 10px #bbbbbb;
+}
+
+.slick-initialized .slick-slide {
+  display: block;
+  padding: 15px;
+}
+
+.slick-initialized .slick-slide img {
+  width: 100%;
+  max-height: 210px;
+  object-fit: cover;
 }
 // Serives section
 
@@ -285,7 +305,7 @@ nav .nav-link,
 
 /* =============banner section============= */
 .banner {
-  background-image: url(../images/img1.jpg);
+  background-image: var(--secondaryBanner);
   height: 400px;
   width: 100%;
   background-size: cover;
@@ -305,7 +325,7 @@ nav .nav-link,
 
 /* =============footer section============= */
 footer {
-  background-color: var(--theme);
+  background-color: var(--secondaryColor);
   color: var(--white);
 }
 
@@ -343,7 +363,7 @@ footer {
   }
 
   .navbar-collapse {
-    background: var(--theme);
+    background: var(--secondaryColor);
     padding: 1rem;
   }
 
