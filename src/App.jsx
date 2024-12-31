@@ -22,6 +22,9 @@ import AdminBanner from "./admin/AdminBanner";
 import Loader from "./admin/Loader";
 import AdminColors from "./admin/adminColors";
 import axios from "axios";
+import Login from "./components/Login";
+import ProtectedRoutes from "./components/ProtectedRoutes";
+import Register from "./components/Register";
 
 const App = () => {
   // const [data, setData] = useState([]);
@@ -71,60 +74,84 @@ const App = () => {
 
   return (
     <>
-      {/* Routes */}
-      {/* <BrowserRouter>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <>
-                <Header />
-                <HeroBanner />
-                <About />
-                <Service />
-                <Portfolio />
-                <Testimonials />
-                <Banner />
-                <Contact />
-                <Footer />
-              </>
-            }
-          />
-        </Routes>
-      </BrowserRouter> */}
-
-      {/* Admin Routes */}
-      {/* <BrowserRouter>
-        <div className={`d-flex `} onClick={clickHandle}>
-          <SideNav />
-          <div className="main-container">
-            <Routes>
-              <Route path="/admin/header" element={<AdminHeader />} />
-              <Route path="/admin/hero" element={<AdminHero />} />
-              <Route path="/admin/about" element={<About2 />} />
-              <Route path="/admin/service" element={<AdminService />} />
-            </Routes>
-          </div>
-        </div>
-      </BrowserRouter> */}
-
       {isAdminRoute ? (
         <div className="d-flex">
           <SideNav />
           <div className="main-container">
             <Routes>
-              <Route path="/admin/header" element={<AdminHeader />} />
-              <Route path="/admin/hero" element={<AdminHero />} />
-              <Route path="/admin/about" element={<About2 />} />
-              <Route path="/admin/service" element={<AdminService />} />
-              <Route path="/admin/portfolio" element={<AdminPortfolio />} />
+              <Route
+                path="/admin/header"
+                element={
+                  <ProtectedRoutes>
+                    <AdminHeader />
+                  </ProtectedRoutes>
+                }
+              />
+              <Route
+                path="/admin/hero"
+                element={
+                  <ProtectedRoutes>
+                    <AdminHero />
+                  </ProtectedRoutes>
+                }
+              />
+              <Route
+                path="/admin/about"
+                element={
+                  <ProtectedRoutes>
+                    <About2 />
+                  </ProtectedRoutes>
+                }
+              />
+              <Route
+                path="/admin/service"
+                element={
+                  <ProtectedRoutes>
+                    <AdminService />
+                  </ProtectedRoutes>
+                }
+              />
+              <Route
+                path="/admin/portfolio"
+                element={
+                  <ProtectedRoutes>
+                    <AdminPortfolio />
+                  </ProtectedRoutes>
+                }
+              />
               <Route
                 path="/admin/testimonials"
-                element={<AdminTestimonial />}
+                element={
+                  <ProtectedRoutes>
+                    <AdminTestimonial />
+                  </ProtectedRoutes>
+                }
               />
-              <Route path="/admin/banner" element={<AdminBanner />} />
-              <Route path="/admin/loader" element={<Loader />} />
-              <Route path="/admin/colors" element={<AdminColors />} />
+              <Route
+                path="/admin/banner"
+                element={
+                  <ProtectedRoutes>
+                    <AdminBanner />
+                  </ProtectedRoutes>
+                }
+              />
+              <Route
+                path="/admin/loader"
+                element={
+                  <ProtectedRoutes>
+                    <Loader />
+                  </ProtectedRoutes>
+                }
+              />
+              <Route
+                path="/admin/colors"
+                element={
+                  <ProtectedRoutes>
+                    <AdminColors />
+                  </ProtectedRoutes>
+                }
+              />
+              <Route path="/login" element={<Login />} />
             </Routes>
           </div>
         </div>
@@ -149,6 +176,8 @@ export default function Main() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/*" element={<App />} />
       </Routes>
     </BrowserRouter>
