@@ -91,7 +91,7 @@ const AdminPortfolio = () => {
 
   return (
     <div>
-      <h2 className="text-center">Portfolio Section Update</h2>
+      <h4 className="text-center">Portfolio Section Update</h4>
       <form onSubmit={submitHandle}>
         <div className="row">
           <div className="col-lg-6 mt-5">

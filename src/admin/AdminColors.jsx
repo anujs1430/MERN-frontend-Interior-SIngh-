@@ -80,6 +80,7 @@ const AdminColors = () => {
 
   return (
     <>
+      <h4 className="text-center mb-5">Our Theme Colors & Banners</h4>
       <form onSubmit={submitHandle}>
         <div className="row">
           <div className="col-lg-6">

@@ -8,7 +8,7 @@ const AdminHeader = () => {
     phone: "",
     brandLogo: null,
     navbarBgColor: "#ffffff", // Default color
-    isTransparent: false, // New state for transparency
+    isTransparent: true, // New state for transparency
   });
 
   const server = "http://localhost:8000";
@@ -61,7 +61,7 @@ const AdminHeader = () => {
         phone: "",
         brandLogo: null,
         navbarBgColor: "#ffffff", // Reset the color picker to default
-        isTransparent: false,
+        isTransparent: true,
       });
 
       // Clear file input fields after submit using refs

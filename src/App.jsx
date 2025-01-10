@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Header from "./components/Header";
 import HeroBanner from "./components/HeroBanner";
 import About from "./components/About";
@@ -8,7 +8,13 @@ import Testimonials from "./components/Testimonials";
 import Banner from "./components/Banner";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 import About2 from "./admin/About";
 import SideNav from "./admin/SideNav";
 import AdminHero from "./admin/AdminHero";
@@ -25,9 +31,9 @@ import axios from "axios";
 import Login from "./components/Login";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import Register from "./components/Register";
+import AdminProfile from "./admin/AdminProfile";
 
 const App = () => {
-  // const [data, setData] = useState([]);
   const location = useLocation();
 
   const isAdminRoute = location.pathname.startsWith("/admin");
@@ -66,8 +72,6 @@ const App = () => {
             `url(${serverURL}${colors.secondaryBanner})`
           );
         }
-
-        // console.log(colors);
       })
       .catch((error) => console.error(error));
   }, []);
@@ -79,6 +83,11 @@ const App = () => {
           <SideNav />
           <div className="main-container">
             <Routes>
+              <Route
+                path={"/admin"}
+                element={<Navigate to={"/admin/header"} replace />}
+              />
+
               <Route
                 path="/admin/header"
                 element={
@@ -151,6 +160,22 @@ const App = () => {
                   </ProtectedRoutes>
                 }
               />
+              <Route
+                path="/admin"
+                element={
+                  <ProtectedRoutes>
+                    <Login />
+                  </ProtectedRoutes>
+                }
+              />
+              <Route
+                path="/admin/profile"
+                element={
+                  <ProtectedRoutes>
+                    <AdminProfile />
+                  </ProtectedRoutes>
+                }
+              />
               <Route path="/login" element={<Login />} />
             </Routes>
           </div>
@@ -176,8 +201,22 @@ export default function Main() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/register"
+          element={
+            <ProtectedRoutes>
+              <Register />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <ProtectedRoutes>
+              <Login />
+            </ProtectedRoutes>
+          }
+        />
         <Route path="/*" element={<App />} />
       </Routes>
     </BrowserRouter>

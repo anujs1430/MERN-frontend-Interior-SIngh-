@@ -11,6 +11,21 @@ aside {
   min-height: 100vh;
 }
 
+aside img {
+  width: 140px;
+  margin: 10px;
+  filter: invert(1);
+}
+
+aside .fixed-bottom,
+.fixed-top {
+  width: 250px;
+}
+
+aside h5 {
+  border-bottom: 1px solid #a98326;
+}
+
 aside ul {
   position: sticky;
   top: 0;
@@ -29,6 +44,9 @@ label {
 aside a.btn {
   width: 100%;
   text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 a.btn.active {
@@ -110,5 +128,32 @@ a.btn.active {
     -ms-transform: translateY(-20px);
     -o-transform: translateY(-20px);
     transform: translateY(-20px);
+  }
+}
+
+.login-container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+
+  .card {
+    display: flex;
+    align-items: center;
+
+    .bg-theme {
+      background-color: var(--lightTheme);
+    }
+
+    .welcome-msg {
+      display: grid;
+      place-content: center;
+      height: 100%;
+      color: var(--white);
+      text-align: center;
+    }
+
+    input::placeholder {
+      color: #cecece;
+    }
   }
 }
