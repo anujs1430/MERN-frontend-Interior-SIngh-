@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
+import SectionDisableFunc from "../components/SectionDisableFunc";
 
 const AdminHeader = () => {
   const [data, setData] = useState({
@@ -8,11 +9,13 @@ const AdminHeader = () => {
     phone: "",
     brandLogo: null,
     navbarBgColor: "#ffffff", // Default color
-    isTransparent: true, // New state for transparency
+    isTransparent: false, // New state for transparency
+    isVisible: true,
   });
 
   const server = "http://localhost:8000";
   const headerAPI = "http://localhost:8000/api/getHeader";
+  const updateHeaderAPI = "http://localhost:8000/api/getHeader/visibility"; // New endpoint for updating visibility
 
   const [response, setResponse] = useState([]);
 
@@ -61,7 +64,7 @@ const AdminHeader = () => {
         phone: "",
         brandLogo: null,
         navbarBgColor: "#ffffff", // Reset the color picker to default
-        isTransparent: true,
+        isTransparent: false,
       });
 
       // Clear file input fields after submit using refs
@@ -73,6 +76,26 @@ const AdminHeader = () => {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  // Handle visibility toggle and send the update to the backend
+  const handleHeaderVisibilityToggle = () => {
+    const newVisibility = !data.isVisible;
+    setData({ ...data, isVisible: newVisibility });
+
+    // Send the visibility update to the backend via the new route
+    axios
+      .post(updateHeaderAPI, {
+        isVisible: newVisibility,
+      })
+      .then((response) => {
+        toast.success("Header visibility updated");
+        console.log(response.data.data);
+      })
+      .catch((error) => {
+        toast.error("Error updating header visibility");
+        console.error(error);
+      });
   };
 
   useEffect(() => {
@@ -89,7 +112,24 @@ const AdminHeader = () => {
 
   return (
     <div>
-      <h4 className="text-center">Header Section Update</h4>
+      <div className="d-flex justify-content-between">
+        <h4 className="text-center">Header Section Update</h4>
+        {/* Add the toggle for header visibility */}
+        {/* <div className="mt-3">
+        <label>Hide Header Section:</label>
+        <input
+          type="checkbox"
+          checked={!data.isVisible}
+          onChange={handleHeaderVisibilityToggle}
+        />
+        <span>Header Hidden</span>
+        </div> */}
+        <SectionDisableFunc
+          handleVisibilityToggle={handleHeaderVisibilityToggle}
+          checked={!data.isVisible}
+          visibility={response[0]?.isVisible == true ? "ONN" : "OFF"}
+        />
+      </div>
       <form onSubmit={submitHandle}>
         <div className="row">
           <div className="col-lg-6 mt-5">
@@ -170,6 +210,7 @@ const AdminHeader = () => {
             <th>Email</th>
             <th>Navbar BG Color</th>
             <th>Phone</th>
+            <th>Section Visibility</th>
           </tr>
         </thead>
         <tbody>
@@ -193,6 +234,13 @@ const AdminHeader = () => {
                 />
               </td>
               <td>{items.phone}</td>
+              <td>
+                {items.isVisible == true ? (
+                  <span className="badge text-bg-primary">Visibility: ON</span>
+                ) : (
+                  <span className="badge text-bg-primary">Visibility: OFF</span>
+                )}
+              </td>
             </tr>
           ))}
         </tbody>

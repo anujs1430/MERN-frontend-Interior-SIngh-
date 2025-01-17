@@ -1,17 +1,20 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import SectionDisableFunc from "../components/SectionDisableFunc";
 
 const AdminHero = () => {
   const [heroData, setHeroData] = useState({
     title: "",
     heading: "",
     paragraph: "",
+    isVisible: true,
   });
 
   const [response, setResponse] = useState([]);
 
   const heroAPI = "http://localhost:8000/api/getHero";
+  const heroVisibilityAPI = "http://localhost:8000/api/getHero/visibility";
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -38,6 +41,24 @@ const AdminHero = () => {
     }
   };
 
+  // Handle visibility toggle and send the update to the backend
+  const sectionDisableHandle = () => {
+    console.log("toggle visibility");
+    const newVisibility = !heroData.isVisible;
+    setHeroData({ ...heroData, isVisible: newVisibility });
+
+    axios
+      .post(heroVisibilityAPI, { isVisible: newVisibility })
+      .then((res) => {
+        console.log(res.data.data);
+        toast.success("Hero Banner visibility updated");
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error("Error updating Hero Banner visibility");
+      });
+  };
+
   useEffect(() => {
     axios
       .get(heroAPI)
@@ -49,11 +70,19 @@ const AdminHero = () => {
       .catch((error) => {
         console.error(error);
       });
-  }, [heroData]);
+  }, [heroData, sectionDisableHandle]);
 
   return (
     <div>
-      <h4 className="text-center">Hero Section Update</h4>
+      <div className="d-flex justify-content-between">
+        <h4 className="text-center">Hero Section Update</h4>
+        <SectionDisableFunc
+          handleVisibilityToggle={sectionDisableHandle}
+          checked={!heroData.isVisible}
+          visibility={response[0]?.isVisible == true ? "ONN" : "OFF"}
+        />
+      </div>
+
       <form onSubmit={submitHandle}>
         <div className="row">
           <div className="col-lg-6 mt-5">
@@ -116,6 +145,7 @@ const AdminHero = () => {
             <th>Title</th>
             <th>Heading</th>
             <th>Paragraph</th>
+            <th>Section Visibility</th>
           </tr>
         </thead>
         <tbody>
@@ -124,6 +154,13 @@ const AdminHero = () => {
               <td>{item.title}</td>
               <td>{item.heading}</td>
               <td>{item.paragraph}</td>
+              <td>
+                {item.isVisible == true ? (
+                  <span className="badge text-bg-primary">Visibility: ON</span>
+                ) : (
+                  <span className="badge text-bg-primary">Visibility: OFF</span>
+                )}
+              </td>
             </tr>
           ))}
         </tbody>

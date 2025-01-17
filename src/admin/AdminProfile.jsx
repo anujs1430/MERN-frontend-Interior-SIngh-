@@ -4,6 +4,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { FaEdit } from "react-icons/fa";
 import Loader from "./Loader";
+import SectionDisableFunc from "../components/SectionDisableFunc";
 
 const AdminProfile = () => {
   const API = "http://localhost:8000/api/user/getUser";

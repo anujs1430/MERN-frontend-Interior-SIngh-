@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./components/Header";
 import HeroBanner from "./components/HeroBanner";
 import About from "./components/About";
@@ -8,13 +8,7 @@ import Testimonials from "./components/Testimonials";
 import Banner from "./components/Banner";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
-import {
-  BrowserRouter,
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-} from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import About2 from "./admin/About";
 import SideNav from "./admin/SideNav";
 import AdminHero from "./admin/AdminHero";
@@ -32,14 +26,19 @@ import Login from "./components/Login";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import Register from "./components/Register";
 import AdminProfile from "./admin/AdminProfile";
+import CustomerQuery from "./admin/CustomerQuery";
+import AdminSectionOrder from "./admin/AdminSectionOrder";
+import CreateSection from "./admin/CreateSection";
+import CustomeSections from "./components/CustomeSections";
 
 const App = () => {
-  const location = useLocation();
+  const [sections, setSections] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  const location = useLocation();
   const isAdminRoute = location.pathname.startsWith("/admin");
 
   const colorAPI = "http://localhost:8000/api/getColors";
-
   const serverURL = "http://localhost:8000";
 
   useEffect(() => {
@@ -76,6 +75,28 @@ const App = () => {
       .catch((error) => console.error(error));
   }, []);
 
+  // Fetch sections and sort them by order (updated part)
+  useEffect(() => {
+    axios
+      .get("http://localhost:8000/api/sectionOrdering")
+      .then((res) => {
+        // Sort sections by the order field to render them in the correct order
+        const sortedSections = res.data.sort((a, b) => a.order - b.order);
+        setSections(sortedSections); // Set sorted sections in the state
+        setLoading(false); // Stop the loading state once data is fetched
+      })
+      .catch((error) => {
+        console.error("Error fetching sections:", error);
+      });
+  }, []); // This effect runs once on component mount to fetch section data
+
+  if (loading)
+    return (
+      <div>
+        <Loader></Loader>
+      </div>
+    ); // Show loading message while sections are being fetched
+
   return (
     <>
       {isAdminRoute ? (
@@ -83,11 +104,6 @@ const App = () => {
           <SideNav />
           <div className="main-container">
             <Routes>
-              <Route
-                path={"/admin"}
-                element={<Navigate to={"/admin/header"} replace />}
-              />
-
               <Route
                 path="/admin/header"
                 element={
@@ -176,6 +192,30 @@ const App = () => {
                   </ProtectedRoutes>
                 }
               />
+              <Route
+                path="/admin/customer-query"
+                element={
+                  <ProtectedRoutes>
+                    <CustomerQuery />
+                  </ProtectedRoutes>
+                }
+              />
+              <Route
+                path="/admin/sectionOrder"
+                element={
+                  <ProtectedRoutes>
+                    <AdminSectionOrder />
+                  </ProtectedRoutes>
+                }
+              />
+              <Route
+                path="/admin/createSection"
+                element={
+                  <ProtectedRoutes>
+                    <CreateSection />
+                  </ProtectedRoutes>
+                }
+              />
               <Route path="/login" element={<Login />} />
             </Routes>
           </div>
@@ -183,13 +223,29 @@ const App = () => {
       ) : (
         <>
           <Header />
-          <HeroBanner />
-          <About />
-          <Service />
-          <Portfolio />
-          <Testimonials />
-          <Banner />
-          <Contact />
+          {sections.map((section) => {
+            switch (section.name) {
+              case "HeroBanner":
+                return <HeroBanner key={section._id} />;
+              case "Service":
+                return <Service key={section._id} />;
+              case "About":
+                return <About key={section._id} />;
+              case "Portfolio":
+                return <Portfolio key={section._id} />;
+              case "Testimonials":
+                return <Testimonials key={section._id} />;
+              case "Banner":
+                return <Banner key={section._id} />;
+              case "Contact":
+                return <Contact key={section._id} />;
+              case "CustomeSection":
+                return <CustomeSections />;
+              default:
+                return null;
+            }
+          })}
+          {/* <CustomeSections /> */}
           <Footer />
         </>
       )}
@@ -201,22 +257,8 @@ export default function Main() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path="/register"
-          element={
-            <ProtectedRoutes>
-              <Register />
-            </ProtectedRoutes>
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            <ProtectedRoutes>
-              <Login />
-            </ProtectedRoutes>
-          }
-        />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/*" element={<App />} />
       </Routes>
     </BrowserRouter>

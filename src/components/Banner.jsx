@@ -16,7 +16,7 @@ const Banner = () => {
   }, []);
 
   return (
-    <section className="banner">
+    <section className={`banner ${data?.isVisible === false ? "d-none" : ""}`}>
       <div className="w-100 h-100 center text-center">
         <div className="w-75 m-auto">
           <h2>{data.heading}</h2>

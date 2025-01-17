@@ -29,14 +29,19 @@ const Services = () => {
   };
 
   return (
-    <section className="services section-devider py-5" id="services">
+    <section
+      className={`services section-devider py-5 ${
+        data[0]?.isVisible === false ? "d-none" : ""
+      }`}
+      id="services"
+    >
       <div className="text-center p-1">
         <p className="text-theme m-0">
           <small>Services</small>
         </p>
         <h2>
           <span className="text-theme">O</span>ur
-          <span className="text-theme">S</span>ervices
+          <span className="text-theme"> S</span>ervices
         </h2>
         <p className="mb-0">
           <i>

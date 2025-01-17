@@ -32,7 +32,10 @@ const About = () => {
   };
 
   return (
-    <section className="about py-5" id="about">
+    <section
+      className={`about py-5 ${aboutData.isVisible === false ? "d-none" : ""}`}
+      id="about"
+    >
       <div className="container">
         <div className="row">
           <div className="col-lg-6">

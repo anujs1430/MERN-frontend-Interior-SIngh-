@@ -20,6 +20,8 @@ aside img {
 aside .fixed-bottom,
 .fixed-top {
   width: 250px;
+  max-height: 450px;
+  overflow: auto;
 }
 
 aside h5 {
@@ -68,6 +70,11 @@ a.btn.active {
   display: block;
   float: left;
   margin: 1% 0 1% 1.6%;
+
+  position: absolute;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
 }
 
 .coll:first-of-type {
@@ -156,4 +163,23 @@ a.btn.active {
       color: #cecece;
     }
   }
+}
+
+// Section Toggle button
+.form-switch .form-check-input {
+  width: 3em;
+  margin-left: -3.5em;
+  padding: 10px;
+}
+
+.section-item {
+  padding: 10px;
+  margin: 5px 0;
+  background-color: #dbdbdb;
+  border: 1px solid #9b9b9b;
+  cursor: grab;
+}
+
+.section-item:hover {
+  background-color: #eaeaea;
 }

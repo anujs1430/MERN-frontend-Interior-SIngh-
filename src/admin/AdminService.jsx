@@ -2,18 +2,22 @@ import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { MdDeleteForever } from "react-icons/md";
+import SectionDisableFunc from "../components/SectionDisableFunc";
 
 const AdminService = () => {
   const [data, setData] = useState({
     title: "",
     description: "",
     image: null,
+    isVisible: true,
   });
 
   const [response, setResponse] = useState([]);
+  const [refresh, setRefresh] = useState(true);
 
   const server = "http://localhost:8000";
   const serviceAPI = "http://localhost:8000/api/getServices";
+  const visibilityAPI = "http://localhost:8000/api/getServices/visibility";
 
   const imageReff = useRef(null);
 
@@ -58,7 +62,7 @@ const AdminService = () => {
 
       toast.success("Data has been Updated");
 
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       console.error("service: ", error);
     }
@@ -72,10 +76,28 @@ const AdminService = () => {
       );
 
       toast.success("Service deleted successfully");
-      console.log(response);
+      // console.log(response);
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const serviceVisibilityHandle = () => {
+    const newVisibility = !data.isVisible;
+
+    setData({ ...data, isVisible: newVisibility });
+
+    axios
+      .post(visibilityAPI, { isVisible: newVisibility })
+      .then((res) => {
+        // console.log(res.data.data);
+        toast.success("Services visibility updated");
+        setRefresh(!refresh);
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Error updating Services visibility");
+      });
   };
 
   useEffect(() => {
@@ -83,16 +105,24 @@ const AdminService = () => {
       .get(serviceAPI)
       .then((res) => {
         setResponse(res.data.data);
-        console.log(response);
+        // console.log(response);
       })
       .catch((error) => {
         console.error(error);
       });
-  }, [data]);
+  }, [data, refresh]);
 
   return (
     <div>
-      <h4 className="text-center">Services Section Update</h4>
+      <div className="d-flex justify-content-between">
+        <h4>Services Section Update</h4>
+        <SectionDisableFunc
+          handleVisibilityToggle={serviceVisibilityHandle}
+          checked={!data.isVisible}
+          visibility={response[0]?.isVisible === true ? "ONN" : "OFF"}
+        />
+      </div>
+
       <form onSubmit={submitHandle}>
         <div className="row">
           <div className="col-lg-6 mt-5">
@@ -154,6 +184,7 @@ const AdminService = () => {
             <th>Title</th>
             <th>Descrition</th>
             <th>Action</th>
+            <th>Section Visibility</th>
           </tr>
         </thead>
         <tbody>
@@ -169,6 +200,13 @@ const AdminService = () => {
                   className="h3"
                   onClick={() => deleteHandle(items._id)}
                 />
+              </td>
+              <td>
+                <span className="badge text-bg-primary">
+                  {items.isVisible === true
+                    ? "Visibility: ONN"
+                    : "Visibility: OFF"}
+                </span>
               </td>
             </tr>
           ))}

@@ -54,9 +54,10 @@ const Header = () => {
   };
 
   const navbarBgColor = data.navbarBgColor || "transparent"; // Default to white if no color is set
+
   return (
     <>
-      <nav className="top-nav">
+      <nav className={`top-nav ${data.isVisible === false ? "d-none" : ""}`}>
         <div className="d-flex justify-content-between align-items-center">
           <motion.div {...animation1} className="d-flex gap-3">
             <p className="m-0">
@@ -83,7 +84,9 @@ const Header = () => {
       </nav>
 
       <nav
-        className="navbar navbar-expand-lg"
+        className={`navbar navbar-expand-lg ${
+          data.isVisible === false ? "d-none" : ""
+        }`}
         style={{ backgroundColor: navbarBgColor }}
       >
         <div className="container">

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import SectionDisableFunc from "../components/SectionDisableFunc";
 
 const About = () => {
   const [aboutEditData, setAboutEditData] = useState({
@@ -8,11 +9,13 @@ const About = () => {
     paragraph: "",
     mainImage: null,
     subImage: null,
+    isVisible: true,
   });
 
   const [response, setResponse] = useState([]);
 
   const aboutAPI = "http://localhost:8000/api/getAbout";
+  const visibilityAPI = "http://localhost:8000/api/getAbout/visibility";
   const server = "http://localhost:8000";
 
   const mainImageReff = useRef(null);
@@ -70,19 +73,44 @@ const About = () => {
     }
   };
 
+  const aboutVisibilityHandle = () => {
+    const newVisibility = !aboutEditData.isVisible;
+    setAboutEditData({ ...aboutEditData, isVisible: newVisibility });
+
+    axios
+      .post(visibilityAPI, { isVisible: newVisibility })
+      .then((res) => {
+        console.log(res.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   useEffect(() => {
-    axios.get(aboutAPI).then((res) => {
-      setResponse(res.data);
-    });
-  }, [aboutEditData]);
+    axios
+      .get(aboutAPI)
+      .then((res) => {
+        setResponse(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [aboutEditData, aboutVisibilityHandle]);
 
   return (
-    <div className="">
+    <div>
+      <div className="d-flex justify-content-between">
+        <h4>About section Update</h4>
+        <SectionDisableFunc
+          handleVisibilityToggle={aboutVisibilityHandle}
+          checked={!aboutEditData.isVisible}
+          visibility={response[0]?.isVisible === true ? "ONN" : "OFF"}
+        />
+      </div>
+
       <form action="" onSubmit={aboutSubmitHandle}>
         <div className="row">
-          <div className="text-center">
-            <h4>About section Update</h4>
-          </div>
           <div className="col-lg-6 mt-5">
             <div className="mb-3">
               <label htmlFor="mainImage">Main Image</label>
@@ -154,6 +182,7 @@ const About = () => {
             <th>Sub Image</th>
             <th>Heading</th>
             <th>Paragraph</th>
+            <th>Section Visibility</th>
           </tr>
         </thead>
         <tbody>
@@ -175,6 +204,11 @@ const About = () => {
               </td>
               <td>{items.heading}</td>
               <td>{items.paragraph}</td>
+              <td>
+                <span className="badge text-bg-primary">
+                  Visibility: {items.isVisible === true ? "ONN" : "OFF"}
+                </span>
+              </td>
             </tr>
           ))}
         </tbody>

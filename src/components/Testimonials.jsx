@@ -11,8 +11,8 @@ const Testimonials = () => {
           <small>Testimonials</small>
         </p>
         <h2>
-          <span className="text-theme">O</span>ur{" "}
-          <span className="text-theme">T</span>estimonials
+          <span className="text-theme">O</span>ur
+          <span className="text-theme"> T</span>estimonials
         </h2>
         <p>
           <i>

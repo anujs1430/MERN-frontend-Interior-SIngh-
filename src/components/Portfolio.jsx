@@ -89,14 +89,19 @@ const Portfolio = () => {
   };
 
   return (
-    <section className="portfolio py-5" id="portfolio">
+    <section
+      className={`portfolio py-5 ${
+        data[0]?.isVisible === false ? "d-none" : ""
+      }`}
+      id="portfolio"
+    >
       <div className="text-center p-1">
         <p className="text-theme m-0">
           <small>Portfolio</small>
         </p>
         <h2>
           <span className="text-theme">O</span>ur
-          <span className="text-theme">P</span>ortfolio
+          <span className="text-theme"> P</span>ortfolio
         </h2>
         <p>
           <i>

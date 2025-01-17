@@ -23,7 +23,7 @@ const HeroBanner = () => {
   };
 
   return (
-    <section className="hero">
+    <section className={`hero ${data.isVisible === false ? "d-none" : ""}`}>
       <div id="carouselExample" className="carousel slide">
         <div className="carousel-inner">
           <div className="carousel-item carousel-item-img active">

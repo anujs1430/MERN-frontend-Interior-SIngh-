@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { MdDashboard } from "react-icons/md";
+import {
+  MdCreateNewFolder,
+  MdDashboard,
+  MdVideoSettings,
+} from "react-icons/md";
 import { IoDesktopSharp } from "react-icons/io5";
 import { BiSolidDetail } from "react-icons/bi";
 import { MdWorkspacePremium } from "react-icons/md";
 import { FaPeopleGroup } from "react-icons/fa6";
 import { FaImage } from "react-icons/fa";
 import { IoColorPalette } from "react-icons/io5";
-import { RiCustomerServiceFill } from "react-icons/ri";
+import { RiCustomerService2Fill, RiCustomerServiceFill } from "react-icons/ri";
 import { IoLogOut } from "react-icons/io5";
 import { ImProfile } from "react-icons/im";
 import axios from "axios";
@@ -57,6 +61,24 @@ const SideNav = () => {
       label: "Theme Colors & Banners",
       to: "/admin/colors",
       icon: <IoColorPalette />,
+    },
+
+    {
+      label: "Customers Queries",
+      to: "/admin/customer-query",
+      icon: <RiCustomerService2Fill />,
+    },
+
+    {
+      label: "Section Order Management",
+      to: "/admin/sectionOrder",
+      icon: <MdVideoSettings />,
+    },
+
+    {
+      label: "Create New Section",
+      to: "/admin/createSection",
+      icon: <MdCreateNewFolder />,
     },
   ];
 

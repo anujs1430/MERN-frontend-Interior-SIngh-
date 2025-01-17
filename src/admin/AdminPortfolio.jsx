@@ -3,17 +3,20 @@ import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { MdDeleteForever } from "react-icons/md";
 import Loader from "./Loader";
+import SectionDisableFunc from "../components/SectionDisableFunc";
 
 const AdminPortfolio = () => {
   const [data, setData] = useState({
     description: "",
     image: null,
+    isVisible: true,
   });
   const [response, setResponse] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [loader, setLoader] = useState(true);
 
   const portfolioAPI = "http://localhost:8000/api/getPortfolio";
+  const visibilityAPI = "http://localhost:8000/api/getPortfolio/visibility";
   const server = "http://localhost:8000";
 
   const imageReff = useRef(null);
@@ -76,6 +79,23 @@ const AdminPortfolio = () => {
     }
   };
 
+  const protfolioVisibilityHandle = () => {
+    const newVisibility = !data.isVisible;
+    setData({ ...data, isVisible: newVisibility });
+
+    axios
+      .post(visibilityAPI, { isVisible: newVisibility })
+      .then((res) => {
+        console.log(res.data.data);
+        toast.success("Portfolio visibility updated successfully");
+        setRefresh(!refresh);
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Error updating Portfolio visibility");
+      });
+  };
+
   useEffect(() => {
     axios
       .get(portfolioAPI)
@@ -91,7 +111,15 @@ const AdminPortfolio = () => {
 
   return (
     <div>
-      <h4 className="text-center">Portfolio Section Update</h4>
+      <div className="d-flex justify-content-between">
+        <h4>Profile Information</h4>
+        <SectionDisableFunc
+          handleVisibilityToggle={protfolioVisibilityHandle}
+          checked={!data.isVisible}
+          visibility={response[0]?.isVisible === true ? "ONN" : "OFF"}
+        />
+      </div>
+
       <form onSubmit={submitHandle}>
         <div className="row">
           <div className="col-lg-6 mt-5">
@@ -137,6 +165,7 @@ const AdminPortfolio = () => {
             <tr>
               <th>Image</th>
               <th>Description</th>
+              <th>Section Visibility</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -152,6 +181,11 @@ const AdminPortfolio = () => {
                   />
                 </td>
                 <td>{item.description}</td>
+                <td>
+                  <span className="badge text-bg-primary">
+                    Visibility: {item.isVisible === true ? "ONN" : "OFF"}
+                  </span>
+                </td>
                 <td>
                   <MdDeleteForever
                     className="h3"

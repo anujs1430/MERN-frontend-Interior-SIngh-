@@ -54,8 +54,8 @@ const Contact = () => {
           <small>Contact Us</small>
         </p>
         <h2>
-          <span className="text-theme">C</span>ontact{" "}
-          <span className="text-theme">U</span>s
+          <span className="text-theme">C</span>ontact
+          <span className="text-theme"> U</span>s
         </h2>
         <p>
           <i>

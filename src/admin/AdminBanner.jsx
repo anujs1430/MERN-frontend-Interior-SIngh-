@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import SectionDisableFunc from "../components/SectionDisableFunc";
 
 const AdminBanner = () => {
   const [data, setData] = useState({
     heading: "",
     description: "",
+    isVisible: true,
   });
-
   const [response, setResponse] = useState([]);
+  const [refresh, setRefresh] = useState(true);
 
   const bannerAPI = "http://localhost:8000/api/getBanner";
+  const visibilityAPI = "http://localhost:8000/api/getBanner/visibility";
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -36,21 +39,46 @@ const AdminBanner = () => {
     }
   };
 
+  const bannerVisibilityHandle = () => {
+    const newVisibility = !data.isVisible;
+    setData({ ...data, isVisible: newVisibility });
+
+    axios
+      .post(visibilityAPI, { isVisible: newVisibility })
+      .then((res) => {
+        console.log(res.data.data);
+        toast.success("Banner visibility updated successfully");
+        setRefresh(!refresh);
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Error updating header visibility");
+      });
+  };
+
   useEffect(() => {
     axios
       .get(bannerAPI)
       .then((res) => {
         setResponse(res.data.data);
-        console.error(response);
+        console.log(response);
       })
       .catch((error) => {
         console.error(error);
       });
-  }, [data]);
+  }, [data, refresh]);
 
   return (
     <div>
-      <h4 className="text-center">Banner Section Update</h4>
+      <div className="d-flex justify-content-between">
+        <h4>Banner Section Update</h4>
+        <SectionDisableFunc
+          handleVisibilityToggle={bannerVisibilityHandle}
+          checked={!data.isVisible}
+          visibility={response[0]?.isVisible === true ? "ONN" : "OFF"}
+        />
+      </div>
+
       <form onSubmit={submitHandle}>
         <div className="row">
           <div className="col-lg-6 mt-5">
@@ -95,6 +123,7 @@ const AdminBanner = () => {
           <tr>
             <th>Heading</th>
             <th>Description</th>
+            <th>Section Visibility</th>
           </tr>
         </thead>
         <tbody>
@@ -102,6 +131,11 @@ const AdminBanner = () => {
             <tr key={i}>
               <td>{items.heading}</td>
               <td>{items.description}</td>
+              <td>
+                <span className="badge text-bg-primary">
+                  Visibility: {items.isVisible === true ? "ONN" : "OFF"}
+                </span>
+              </td>
             </tr>
           ))}
         </tbody>
