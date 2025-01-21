@@ -1,7 +1,14 @@
-import React from "react";
-import brandIcon from "../assets/images/brand-logo2.png";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { FaLocationDot } from "react-icons/fa6";
+import { MdEmail } from "react-icons/md";
+import { FaPhoneAlt } from "react-icons/fa";
 
 const Footer = () => {
+  const [refresh, setRefresh] = useState(true);
+  const [footerData, setFooterData] = useState([]);
+  const [headerData, setHeaderData] = useState([]);
+
   const links = [
     { name: "Home", href: "#" },
     { name: "About Us", href: "#about" },
@@ -10,17 +17,48 @@ const Footer = () => {
     { name: "Testimonials", href: "#testimonial" },
   ];
 
+  const footerAPI = "http://localhost:8000/api/footer";
+  const headerAPI = "http://localhost:8000/api/getHeader";
+  const server = "http://localhost:8000";
+
+  useEffect(() => {
+    axios
+      .get(footerAPI)
+      .then((res) => {
+        setFooterData(res.data.data);
+        setRefresh(!refresh);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [refresh]);
+
+  useEffect(() => {
+    axios
+      .get(headerAPI)
+      .then((res) => {
+        setHeaderData(res.data.data);
+        setRefresh(!refresh);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [refresh]);
+
   return (
-    <footer className="pt-5">
+    <footer
+      className={`pt-5 ${footerData[0]?.isVisible === false ? "d-none" : ""}`}
+    >
       <div className="container">
         <div className="row">
           <div className="col-lg-3 pe-5">
-            <img src={brandIcon} alt="brand-logo" width="200px" />
+            <img
+              src={`${server}${headerData[0]?.brandLogo}`}
+              alt="brand-logo"
+              width="200px"
+            />
             <p>
-              <small>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elitLorem
-                ipsum dolor sit, amet consectetur adipisicing elit.
-              </small>
+              <small>{footerData[0]?.description}</small>
             </p>
             <div className=" d-flex gap-2">
               <i className="bi bi-facebook"></i>
@@ -42,19 +80,22 @@ const Footer = () => {
             <h5>Our Contact Details</h5>
             <div>
               <p className="mb-0">
-                <i className="bi bi-geo-fill"></i>{" "}
-                <small>94 XYZ, Chor Bazaar, Wakandapur (Delhi)</small>
+                <FaLocationDot /> &nbsp; <small>{footerData[0]?.address}</small>
               </p>
               <p className="mb-0">
-                <i className="bi bi-envelope-at-fill"></i>{" "}
+                <MdEmail />
+                &nbsp; &nbsp;
                 <small>
-                  <a href="mailto:abc@sample.com">abc@sample.com</a>
+                  <a href="mailto:abc@sample.com">{footerData[0]?.email}</a>
                 </small>
               </p>
               <p className="mb-0">
-                <i className="bi bi-telephone-forward-fill"></i>{" "}
+                <FaPhoneAlt />
+                &nbsp; &nbsp;
                 <small>
-                  <a href="tel:+919876543211">+91 9876543211</a>
+                  <a href={`tel:${footerData[0]?.phone}`}>
+                    {footerData[0]?.phone}
+                  </a>
                 </small>
               </p>
             </div>

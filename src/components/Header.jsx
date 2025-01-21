@@ -7,17 +7,19 @@ import { motion } from "framer-motion";
 
 const Header = () => {
   const [data, setData] = useState([]);
+  const [refresh, setRefresh] = useState(true);
 
   useEffect(() => {
     axios
       .get("http://localhost:8000/api/getHeader")
       .then((res) => {
         setData(res.data.data[0]);
+        setRefresh(!refresh);
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
-  }, []);
+  }, [refresh]);
 
   const serverPORT = "http://localhost:8000";
 

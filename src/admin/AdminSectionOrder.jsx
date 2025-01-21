@@ -1,10 +1,20 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { MdDragIndicator, MdWorkspacePremium } from "react-icons/md";
+import {
+  MdCreateNewFolder,
+  MdDragIndicator,
+  MdWorkspacePremium,
+} from "react-icons/md";
 import { BiSolidDetail } from "react-icons/bi";
-import { FaImage, FaImages, FaPeopleGroup } from "react-icons/fa6";
+import {
+  FaImage,
+  FaImages,
+  FaPeopleGroup,
+  FaPersonCircleQuestion,
+} from "react-icons/fa6";
 import { RiCustomerService2Fill, RiCustomerServiceFill } from "react-icons/ri";
+import Loader from "./Loader";
 
 const AdminSectionOrder = () => {
   const [sections, setSections] = useState([]);
@@ -62,9 +72,16 @@ const AdminSectionOrder = () => {
     Testimonials: <FaPeopleGroup />,
     Banner: <FaImages />,
     Contact: <RiCustomerService2Fill />,
+    Faq: <FaPersonCircleQuestion />,
+    CustomeSection: <MdCreateNewFolder />,
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <p>
+        <Loader />
+      </p>
+    );
 
   return (
     <div>

@@ -13,7 +13,7 @@ const About = () => {
     axios
       .get("http://localhost:8000/api/getAbout")
       .then((res) => {
-        console.log(setAboutData(res.data[0]));
+        setAboutData(res.data[0]);
       })
       .catch((error) => {
         console.log(error);

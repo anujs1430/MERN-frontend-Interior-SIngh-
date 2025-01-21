@@ -30,6 +30,9 @@ import CustomerQuery from "./admin/CustomerQuery";
 import AdminSectionOrder from "./admin/AdminSectionOrder";
 import CreateSection from "./admin/CreateSection";
 import CustomeSections from "./components/CustomeSections";
+import Faq from "./components/Faq";
+import AdminFaq from "./admin/AdminFaq";
+import AdminFooter from "./admin/AdminFooter";
 
 const App = () => {
   const [sections, setSections] = useState([]);
@@ -216,6 +219,22 @@ const App = () => {
                   </ProtectedRoutes>
                 }
               />
+              <Route
+                path="/admin/faq"
+                element={
+                  <ProtectedRoutes>
+                    <AdminFaq />
+                  </ProtectedRoutes>
+                }
+              />
+              <Route
+                path="/admin/footer"
+                element={
+                  <ProtectedRoutes>
+                    <AdminFooter />
+                  </ProtectedRoutes>
+                }
+              />
               <Route path="/login" element={<Login />} />
             </Routes>
           </div>
@@ -239,8 +258,10 @@ const App = () => {
                 return <Banner key={section._id} />;
               case "Contact":
                 return <Contact key={section._id} />;
+              case "Faq":
+                return <Faq key={section._id} />;
               case "CustomeSection":
-                return <CustomeSections />;
+                return <CustomeSections key={section._id} />;
               default:
                 return null;
             }

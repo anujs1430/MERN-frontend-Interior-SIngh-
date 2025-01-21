@@ -8,7 +8,7 @@ import {
 import { IoDesktopSharp } from "react-icons/io5";
 import { BiSolidDetail } from "react-icons/bi";
 import { MdWorkspacePremium } from "react-icons/md";
-import { FaPeopleGroup } from "react-icons/fa6";
+import { FaPeopleGroup, FaPersonCircleQuestion } from "react-icons/fa6";
 import { FaImage } from "react-icons/fa";
 import { IoColorPalette } from "react-icons/io5";
 import { RiCustomerService2Fill, RiCustomerServiceFill } from "react-icons/ri";
@@ -80,6 +80,18 @@ const SideNav = () => {
       to: "/admin/createSection",
       icon: <MdCreateNewFolder />,
     },
+
+    {
+      label: "FAQ's Management",
+      to: "/admin/faq",
+      icon: <FaPersonCircleQuestion />,
+    },
+
+    {
+      label: "Footer Management",
+      to: "/admin/footer",
+      icon: <FaPersonCircleQuestion />,
+    },
   ];
 
   const logoutHandle = () => {
@@ -93,7 +105,7 @@ const SideNav = () => {
       .then((res) => {
         setResponse(res.data.data);
 
-        console.log(response);
+        // console.log(response);
       })
       .catch((err) => {
         console.error(err);

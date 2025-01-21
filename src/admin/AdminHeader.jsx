@@ -12,12 +12,12 @@ const AdminHeader = () => {
     isTransparent: false, // New state for transparency
     isVisible: true,
   });
+  const [response, setResponse] = useState([]);
+  const [refresh, setRefresh] = useState(true);
 
   const server = "http://localhost:8000";
   const headerAPI = "http://localhost:8000/api/getHeader";
   const updateHeaderAPI = "http://localhost:8000/api/getHeader/visibility"; // New endpoint for updating visibility
-
-  const [response, setResponse] = useState([]);
 
   const imageReff = useRef(null);
 
@@ -26,6 +26,7 @@ const AdminHeader = () => {
     if (type === "checkbox") {
       setData({ ...data, [name]: checked }); // Dynamically update the key matching the checkbox's "name" attribute
       // Assign its value as "checked" (true or false) depending on whether the checkbox is selected
+      toast.success("Navbar background visibility changed");
     } else {
       setData({ ...data, [name]: value });
     }
@@ -67,6 +68,8 @@ const AdminHeader = () => {
         isTransparent: false,
       });
 
+      setRefresh(!refresh);
+
       // Clear file input fields after submit using refs
       if (imageReff.current) imageReff.current.value = "";
 
@@ -90,10 +93,14 @@ const AdminHeader = () => {
       })
       .then((response) => {
         toast.success("Header visibility updated");
+
+        setRefresh(!refresh);
+
         console.log(response.data.data);
       })
       .catch((error) => {
         toast.error("Error updating header visibility");
+
         console.error(error);
       });
   };
@@ -103,12 +110,13 @@ const AdminHeader = () => {
       .get(headerAPI)
       .then((res) => {
         setResponse(res.data.data);
+        setRefresh(!refresh);
       })
 
       .catch((error) => {
         console.error(error);
       });
-  }, [data]);
+  }, [refresh]);
 
   return (
     <div>

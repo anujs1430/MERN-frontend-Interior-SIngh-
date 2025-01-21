@@ -323,6 +323,26 @@ nav .nav-link,
   width: fit-content;
 }
 
+/* =============FAQ's section============= */
+button.accordion-button.collapsed {
+  background: var(--primaryColor) !important;
+  color: #fff !important;
+}
+
+button.accordion-button {
+  background-color: var(--secondaryColor) !important;
+  color: #fff !important;
+}
+
+.accordion-body {
+  background-color: #ffe7ad;
+}
+
+.accordion-button::after {
+  filter: invert(1);
+}
+/* =============FAQ's section============= */
+
 /* =============footer section============= */
 footer {
   background-color: var(--secondaryColor);

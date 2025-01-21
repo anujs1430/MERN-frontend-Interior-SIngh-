@@ -114,7 +114,7 @@ const CreateSection = () => {
     });
   };
 
-  const handleEditSubmit = async (section) => {
+  const handleEditSubmit = async (sectionID) => {
     const updatedData = new FormData();
 
     updatedData.append("subName", editForm.subName);
@@ -128,11 +128,15 @@ const CreateSection = () => {
     }
 
     try {
-      const response = axios.put(`${sectionAPI}/${section}`, updatedData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.put(
+        `${sectionAPI}/${sectionID}`,
+        updatedData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       toast.success("Section updated successfully");
       document.querySelector("#exampleModal .btn-close").click();
@@ -153,23 +157,23 @@ const CreateSection = () => {
     setEditForm({ ...editForm, [name]: files[0] });
   };
 
-  const handleVisibilityToggle = (id, currentVisibility) => {
+  const handleVisibilityToggle = async (id, currentVisibility, name) => {
     const newVisibility = !currentVisibility;
 
     setFormData({ ...formData, isVisible: newVisibility });
-
-    axios
-      .post(`http://localhost:8000/api/createSection/visibility/${id}`, {
-        isVisible: newVisibility,
-      })
-      .then((res) => {
-        console.log(res.data);
-        toast.success("Custome section visibility updated");
-      })
-      .catch((error) => {
-        console.error(error);
-        toast.error(error.message);
-      });
+    try {
+      const response = await axios.post(
+        `http://localhost:8000/api/createSection/visibility/${id}`,
+        {
+          isVisible: newVisibility,
+        }
+      );
+      // console.log(id);
+      toast.success(`${name} ${response.data.message}`);
+    } catch (error) {
+      console.error(error);
+      toast.error("visibility Error");
+    }
   };
 
   useEffect(() => {
@@ -199,6 +203,7 @@ const CreateSection = () => {
                   Sub Name
                 </label>
                 <input
+                  required
                   type="text"
                   className="form-control"
                   name="subName"
@@ -212,6 +217,7 @@ const CreateSection = () => {
                   Section Name
                 </label>
                 <input
+                  required
                   type="text"
                   className="form-control"
                   name="sectionName"
@@ -240,6 +246,7 @@ const CreateSection = () => {
                   Sub Paragraph
                 </label>
                 <input
+                  required
                   type="text"
                   className="form-control"
                   name="subPara"
@@ -253,6 +260,7 @@ const CreateSection = () => {
                   Section Image
                 </label>
                 <input
+                  required
                   type="file"
                   className="form-control"
                   name="image"
@@ -303,7 +311,11 @@ const CreateSection = () => {
                   <SectionDisableFunc
                     padding={"4.5em"}
                     handleVisibilityToggle={() =>
-                      handleVisibilityToggle(item._id, item.isVisible)
+                      handleVisibilityToggle(
+                        item._id,
+                        item.isVisible,
+                        item.sectionName
+                      )
                     }
                     visibility={item.isVisible === true ? "ONN" : "OFF"}
                     checked={!item.isVisible}

@@ -13,7 +13,7 @@ const Services = () => {
     axios
       .get("http://localhost:8000/api/getServices/")
       .then((res) => {
-        console.log(setData(res.data.data));
+        setData(res.data.data);
       })
       .catch((error) => {
         console.log(error);
