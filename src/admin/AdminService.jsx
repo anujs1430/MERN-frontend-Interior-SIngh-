@@ -58,9 +58,11 @@ const AdminService = () => {
         image: null,
       });
 
+      setRefresh(!refresh);
+
       if (imageReff.current) imageReff.current.value = "";
 
-      toast.success("Data has been Updated");
+      toast.success(response.data.message);
 
       // console.log(response.data);
     } catch (error) {
@@ -75,8 +77,8 @@ const AdminService = () => {
         `http://localhost:8000/api/getServices/${id}`
       );
 
-      toast.success("Service deleted successfully");
-      // console.log(response);
+      setRefresh(!refresh);
+      toast.success(response.data.message);
     } catch (error) {
       console.log(error);
     }
@@ -91,7 +93,7 @@ const AdminService = () => {
       .post(visibilityAPI, { isVisible: newVisibility })
       .then((res) => {
         // console.log(res.data.data);
-        toast.success("Services visibility updated");
+        toast.success(res.data.message);
         setRefresh(!refresh);
       })
       .catch((error) => {
@@ -110,7 +112,7 @@ const AdminService = () => {
       .catch((error) => {
         console.error(error);
       });
-  }, [data, refresh]);
+  }, [refresh]);
 
   return (
     <div>
@@ -172,7 +174,7 @@ const AdminService = () => {
         </div>
         <div className="mt-3 text-center">
           <button className="btn btn-primary" type="submit">
-            Update
+            Add Service
           </button>
         </div>
       </form>

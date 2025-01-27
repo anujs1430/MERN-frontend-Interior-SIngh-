@@ -16,14 +16,16 @@ import { IoLogOut } from "react-icons/io5";
 import { ImProfile } from "react-icons/im";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { LuPanelBottomClose } from "react-icons/lu";
 
 const SideNav = () => {
   const [response, setResponse] = useState([]);
+  const [refresh, setRefresh] = useState(true);
   const location = useLocation();
 
   // console.log(location.pathname);
 
-  const API = "http://localhost:8000/api/getHeader";
+  const headerAPI = "http://localhost:8000/api/getHeader";
   const server = "http://localhost:8000";
 
   const navLinks = [
@@ -90,7 +92,7 @@ const SideNav = () => {
     {
       label: "Footer Management",
       to: "/admin/footer",
-      icon: <FaPersonCircleQuestion />,
+      icon: <LuPanelBottomClose />,
     },
   ];
 
@@ -101,60 +103,24 @@ const SideNav = () => {
 
   useEffect(() => {
     axios
-      .get(API)
+      .get(headerAPI)
       .then((res) => {
         setResponse(res.data.data);
-
-        // console.log(response);
+        setRefresh(!refresh);
       })
       .catch((err) => {
         console.error(err);
       });
-  }, []);
+  }, [refresh]);
 
   return (
     <aside>
-      {/* <ul>
-        <li>
-          <Link className="btn" to={"/admin/header"}>
-            Header Section
-          </Link>
-        </li>
-        <li>
-          <Link className="btn" to={"/admin/hero"}>
-            Hero banner Section
-          </Link>
-        </li>
-        <li>
-          <Link className="btn" to={"/admin/about"}>
-            About Section
-          </Link>
-        </li>
-        <li>
-          <Link className="btn" to={"/admin/service"}>
-            Our services Section
-          </Link>
-        </li>
-        <li>
-          <Link className="btn" to={"/admin/portfolio"}>
-            Our Portfolio Section
-          </Link>
-        </li>
-        <li>
-          <Link className="btn" to={"/admin/testimonials"}>
-            Our Testimonials Section
-          </Link>
-        </li>
-        <li>
-          <Link className="btn" to={"/admin/banner"}>
-            Our Banner Section
-          </Link>
-        </li>
-      </ul> */}
       <div className="fixed-top">
-        {response.map((items, i) => (
-          <img key={i} src={`${server}${items.brandLogo}`} alt="" />
-        ))}
+        <div className="image-container">
+          {response.map((items, i) => (
+            <img key={i} src={`${server}${items.brandLogo}`} alt="" />
+          ))}
+        </div>
         <ul>
           {navLinks.map((items, i) => (
             <li key={items.label}>

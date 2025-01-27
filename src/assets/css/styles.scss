@@ -114,6 +114,14 @@ nav .nav-link,
   color: var(--white) !important;
 }
 
+.navbar-brand {
+  width: 60px;
+}
+
+.navbar-brand img {
+  width: 100%;
+}
+
 .carousel-item-img {
   background-image: var(--heroBanner);
   height: 550px;

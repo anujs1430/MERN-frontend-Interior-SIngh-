@@ -3,6 +3,7 @@ import axios from "axios";
 import { FaLocationDot } from "react-icons/fa6";
 import { MdEmail } from "react-icons/md";
 import { FaPhoneAlt } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 const Footer = () => {
   const [refresh, setRefresh] = useState(true);
@@ -45,18 +46,26 @@ const Footer = () => {
       });
   }, [refresh]);
 
+  const animation1 = {
+    initial: { x: "-100%", opacity: 0 },
+    whileInView: { x: "0", opacity: 1 },
+    transition: { duration: 0.7 },
+  };
+
   return (
     <footer
       className={`pt-5 ${footerData[0]?.isVisible === false ? "d-none" : ""}`}
     >
       <div className="container">
         <div className="row">
-          <div className="col-lg-3 pe-5">
-            <img
-              src={`${server}${headerData[0]?.brandLogo}`}
-              alt="brand-logo"
-              width="200px"
-            />
+          <motion.div {...animation1} className="col-lg-3 pe-5">
+            <div className="navbar-brand">
+              <img
+                src={`${server}${headerData[0]?.brandLogo}`}
+                alt="brand-logo"
+                width="200px"
+              />
+            </div>
             <p>
               <small>{footerData[0]?.description}</small>
             </p>
@@ -65,8 +74,12 @@ const Footer = () => {
               <i className="bi bi-whatsapp"></i>
               <i className="bi bi-twitter"></i>
             </div>
-          </div>
-          <div className="col-lg-3">
+          </motion.div>
+          <motion.div
+            {...animation1}
+            transition={{ duration: 0.7, delay: 0.4 }}
+            className="col-lg-3"
+          >
             <h5>Important Links</h5>
             <ul>
               {links.map((item, i) => (
@@ -75,8 +88,12 @@ const Footer = () => {
                 </li>
               ))}
             </ul>
-          </div>
-          <div className="col-lg-3">
+          </motion.div>
+          <motion.div
+            {...animation1}
+            transition={{ duration: 0.7, delay: 0.8 }}
+            className="col-lg-3"
+          >
             <h5>Our Contact Details</h5>
             <div>
               <p className="mb-0">
@@ -99,8 +116,12 @@ const Footer = () => {
                 </small>
               </p>
             </div>
-          </div>
-          <div className="col-lg-3">
+          </motion.div>
+          <motion.div
+            {...animation1}
+            transition={{ duration: 0.7, delay: 1.2 }}
+            className="col-lg-3"
+          >
             <iframe
               className="rounded-2"
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.226449141036!2d77.36377801048474!3d28.622974475568423!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce506afcf5f5d%3A0xe15b28be98e266c9!2sCodeGenIT%20Private%20Limited!5e0!3m2!1sen!2sin!4v1734001109115!5m2!1sen!2sin"
@@ -110,20 +131,24 @@ const Footer = () => {
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             ></iframe>
-          </div>
+          </motion.div>
         </div>
 
         <div className="border-bottom"></div>
 
         <div className="text-center py-3">
-          <p className="mb-0">
+          <motion.p
+            {...animation1}
+            transition={{ duration: 0.7, delay: 1.5 }}
+            className="mb-0"
+          >
             <small>
               2024 Copyright @<a href="#">Interior Singh</a> Power by{" "}
               <a target="blank" href="https://codegenit.com/">
                 CodegenIT Pvt Ltd
               </a>
             </small>
-          </p>
+          </motion.p>
         </div>
       </div>
     </footer>

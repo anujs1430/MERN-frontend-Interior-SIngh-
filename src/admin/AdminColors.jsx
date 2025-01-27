@@ -132,7 +132,7 @@ const AdminColors = () => {
         </div>
         <div className="text-center mt-5">
           <button type="submit" className="btn btn-primary">
-            Submit
+            Update Colors & Banner
           </button>
         </div>
       </form>

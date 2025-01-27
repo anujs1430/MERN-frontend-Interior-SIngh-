@@ -53,15 +53,17 @@ const AdminPortfolio = () => {
       setData({
         description: "",
         image: null,
+        isVisible: true,
       });
 
       if (imageReff.current) imageReff.current.value = null;
 
-      toast.success("Data has been submitted");
+      toast.success(response.data.message);
+
       setRefresh(!refresh);
-      console.log(response.data);
     } catch (error) {
       console.log(error);
+      toast.error(error.message);
     }
   };
 
@@ -71,11 +73,12 @@ const AdminPortfolio = () => {
         `http://localhost:8000/api/getPortfolio/${id}`
       );
 
-      toast.success("Portfolio has been deleted successfully");
+      toast.success(response.data.message);
       setRefresh(!refresh);
       // console.log(response);
     } catch (error) {
       console.error(error);
+      toast.error(error.message);
     }
   };
 
@@ -86,13 +89,14 @@ const AdminPortfolio = () => {
     axios
       .post(visibilityAPI, { isVisible: newVisibility })
       .then((res) => {
-        console.log(res.data.data);
-        toast.success("Portfolio visibility updated successfully");
+        toast.success(res.data.message);
+
         setRefresh(!refresh);
       })
       .catch((error) => {
         console.log(error);
-        toast.error("Error updating Portfolio visibility");
+
+        toast.error(error.message);
       });
   };
 
@@ -101,7 +105,7 @@ const AdminPortfolio = () => {
       .get(portfolioAPI)
       .then((res) => {
         setResponse(res.data.data);
-        // console.error(response);
+        setRefresh(!refresh);
         setLoader(false);
       })
       .catch((error) => {
@@ -152,7 +156,7 @@ const AdminPortfolio = () => {
         </div>
         <div className="mt-3 text-center">
           <button className="btn btn-primary" type="submit">
-            Update
+            Add Portfolio
           </button>
         </div>
       </form>

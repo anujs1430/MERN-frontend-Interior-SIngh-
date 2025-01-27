@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 
 const About = () => {
   const [aboutData, setAboutData] = useState([]);
+  const [refresh, setRefresh] = useState(true);
 
   const serverPORT = "http://localhost:8000";
 
@@ -14,17 +15,19 @@ const About = () => {
       .get("http://localhost:8000/api/getAbout")
       .then((res) => {
         setAboutData(res.data[0]);
+        setRefresh(!refresh);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [refresh]);
 
   const animation1 = {
     initial: { x: "-100%", opacity: 0 },
     whileInView: { x: "0", opacity: 1 },
     transition: { duration: 0.5 },
   };
+
   const animation2 = {
     initial: { y: "+100%", opacity: 0 },
     whileInView: { y: "0", opacity: 1 },

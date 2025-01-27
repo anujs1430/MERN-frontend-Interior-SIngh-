@@ -1,31 +1,13 @@
 import React, { useEffect, useState } from "react";
-// import img1 from "../assets/images/about1.jpeg";
-// import img2 from "../assets/images/about2.webp";
-// import img3 from "../assets/images/img1.jpg";
 import axios from "axios";
 import $ from "jquery";
+import { motion } from "framer-motion";
 
 const Portfolio = () => {
   const [seeLess, setseeLess] = useState(true);
   const [data, setData] = useState([]);
 
   const server = "http://localhost:8000";
-
-  //   const images = [
-  //     { src: img1, alt: "Photo 1", description: "Photo 1 Description" },
-  //     { src: img2, alt: "Photo 2", description: "Photo 2 Description" },
-  //     { src: img3, alt: "Photo 3", description: "Photo 3 Description" },
-  //     { src: img3, alt: "Photo 4", description: "Photo 4 Description" },
-  //     { src: img3, alt: "Photo 5", description: "Photo 5 Description" },
-  //     { src: img3, alt: "Photo 6", description: "Photo 6 Description" },
-  //     { src: img3, alt: "Photo 7", description: "Photo 7 Description" },
-  //     { src: img3, alt: "Photo 8", description: "Photo 8 Description" },
-  //     { src: img3, alt: "Photo 9", description: "Photo 9 Description" },
-  //     { src: img3, alt: "Photo 10", description: "Photo 10 Description" },
-  //     { src: img3, alt: "Photo 11", description: "Photo 11 Description" },
-  //     { src: img3, alt: "Photo 12", description: "Photo 12 Description" },
-  //     { src: img3, alt: "Photo 13", description: "Photo 13 Description" },
-  //   ];
 
   useEffect(() => {
     axios
@@ -88,6 +70,12 @@ const Portfolio = () => {
     setseeLess(!seeLess);
   };
 
+  const animation1 = {
+    initial: { y: "+100%", opacity: 0 },
+    whileInView: { y: "0", opacity: 1 },
+    transition: { duration: 0.5 },
+  };
+
   return (
     <section
       className={`portfolio py-5 ${
@@ -95,7 +83,7 @@ const Portfolio = () => {
       }`}
       id="portfolio"
     >
-      <div className="text-center p-1">
+      <motion.div {...animation1} className="text-center p-1">
         <p className="text-theme m-0">
           <small>Portfolio</small>
         </p>
@@ -109,14 +97,19 @@ const Portfolio = () => {
             adipisci!
           </i>
         </p>
-      </div>
+      </motion.div>
       <div className="container">
         <div className={`gallery ${seeLess && "seeLess"}`}>
           {data.map((item, i) => (
-            <div className="photo" data-index={i} key={i}>
+            <motion.div
+              {...animation1}
+              className="photo"
+              data-index={i}
+              key={i}
+            >
               <img src={`${server}${item.image}`} alt={item.alt} />
               <div className="overlay">{item.description}</div>
-            </div>
+            </motion.div>
           ))}
         </div>
 

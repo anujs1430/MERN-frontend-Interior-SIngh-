@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import SectionDisableFunc from "../components/SectionDisableFunc";
+import { FaEdit } from "react-icons/fa";
 
 const AdminBanner = () => {
   const [data, setData] = useState({
@@ -29,13 +30,15 @@ const AdminBanner = () => {
       setData({
         heading: "",
         description: "",
+        isVisible: true,
       });
 
-      toast.success("Data has been update");
-
-      console.log(response);
+      toast.success(response.data.message);
+      setRefresh(!refresh);
+      // console.log(response);
     } catch (error) {
       console.error(error);
+      toast.error(error.message);
     }
   };
 
@@ -46,14 +49,22 @@ const AdminBanner = () => {
     axios
       .post(visibilityAPI, { isVisible: newVisibility })
       .then((res) => {
-        console.log(res.data.data);
-        toast.success("Banner visibility updated successfully");
+        toast.success(res.data.message);
+
         setRefresh(!refresh);
       })
       .catch((error) => {
         console.log(error);
-        toast.error("Error updating header visibility");
+        toast.error(error.message);
       });
+  };
+
+  const handleEdit = (section) => {
+    setData({
+      heading: section.heading,
+      description: section.description,
+      isVisible: true,
+    });
   };
 
   useEffect(() => {
@@ -66,7 +77,7 @@ const AdminBanner = () => {
       .catch((error) => {
         console.error(error);
       });
-  }, [data, refresh]);
+  }, [refresh]);
 
   return (
     <div>
@@ -124,6 +135,7 @@ const AdminBanner = () => {
             <th>Heading</th>
             <th>Description</th>
             <th>Section Visibility</th>
+            <th>Active</th>
           </tr>
         </thead>
         <tbody>
@@ -135,6 +147,9 @@ const AdminBanner = () => {
                 <span className="badge text-bg-primary">
                   Visibility: {items.isVisible === true ? "ONN" : "OFF"}
                 </span>
+              </td>
+              <td>
+                <FaEdit className="h4" onClick={() => handleEdit(items)} />
               </td>
             </tr>
           ))}

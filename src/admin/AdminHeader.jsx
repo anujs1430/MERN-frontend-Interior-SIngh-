@@ -214,7 +214,7 @@ const AdminHeader = () => {
       <table className="table table-dark table-striped mt-5">
         <thead>
           <tr>
-            <th>Image</th>
+            <th width="6%">Image</th>
             <th>Email</th>
             <th>Navbar BG Color</th>
             <th>Phone</th>
@@ -228,7 +228,7 @@ const AdminHeader = () => {
                 <img
                   src={`${server}${items.brandLogo}`}
                   alt=""
-                  width={"150px"}
+                  width={"100%"}
                 />
               </td>
               <td>{items.email}</td>

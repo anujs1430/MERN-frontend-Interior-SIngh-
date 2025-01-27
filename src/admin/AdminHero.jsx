@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import SectionDisableFunc from "../components/SectionDisableFunc";
+import { FaEdit } from "react-icons/fa";
 
 const AdminHero = () => {
   const [heroData, setHeroData] = useState({
@@ -12,6 +13,7 @@ const AdminHero = () => {
   });
 
   const [response, setResponse] = useState([]);
+  const [refresh, setRefresh] = useState(true);
 
   const heroAPI = "http://localhost:8000/api/getHero";
   const heroVisibilityAPI = "http://localhost:8000/api/getHero/visibility";
@@ -32,7 +34,7 @@ const AdminHero = () => {
         heading: "",
         paragraph: "",
       });
-
+      setRefresh(!refresh);
       toast.success("Data has been updated");
 
       console.log("Data Submit:==", response);
@@ -43,7 +45,7 @@ const AdminHero = () => {
 
   // Handle visibility toggle and send the update to the backend
   const sectionDisableHandle = () => {
-    console.log("toggle visibility");
+    // console.log("toggle visibility");
     const newVisibility = !heroData.isVisible;
     setHeroData({ ...heroData, isVisible: newVisibility });
 
@@ -52,11 +54,21 @@ const AdminHero = () => {
       .then((res) => {
         console.log(res.data.data);
         toast.success("Hero Banner visibility updated");
+        setRefresh(!refresh);
       })
       .catch((error) => {
         console.error(error);
         toast.error("Error updating Hero Banner visibility");
       });
+  };
+
+  const editHandle = (section) => {
+    setHeroData({
+      title: section.title,
+      heading: section.heading,
+      paragraph: section.paragraph,
+      isVisible: true,
+    });
   };
 
   useEffect(() => {
@@ -70,7 +82,7 @@ const AdminHero = () => {
       .catch((error) => {
         console.error(error);
       });
-  }, [heroData, sectionDisableHandle]);
+  }, [refresh]);
 
   return (
     <div>
@@ -146,6 +158,7 @@ const AdminHero = () => {
             <th>Heading</th>
             <th>Paragraph</th>
             <th>Section Visibility</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -160,6 +173,9 @@ const AdminHero = () => {
                 ) : (
                   <span className="badge text-bg-primary">Visibility: OFF</span>
                 )}
+              </td>
+              <td>
+                <FaEdit className="h4" onClick={() => editHandle(item)} />
               </td>
             </tr>
           ))}

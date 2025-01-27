@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { motion } from "framer-motion";
 
 const Faq = () => {
   const [response, setResponse] = useState([]);
@@ -19,12 +20,18 @@ const Faq = () => {
       });
   }, [refresh]);
 
+  const animation1 = {
+    initial: { y: "+100%", opacity: 0 },
+    whileInView: { y: "0", opacity: 1 },
+    transition: { duration: 0.5 },
+  };
+
   return (
     <section
       className={`faq py-5 ${response[0]?.isVisible === false ? "d-none" : ""}`}
     >
       <div className="container">
-        <div className="text-center p-1">
+        <motion.div {...animation1} className="text-center p-1">
           <p className="text-theme m-0">
             <small>FAQ's</small>
           </p>
@@ -39,11 +46,16 @@ const Faq = () => {
               adipisci!
             </i>
           </p>
-        </div>
+        </motion.div>
 
         <div className="accordion accordion-flush" id="accordionFlushExample">
           {response.map((item, i) => (
-            <div className="accordion-item" key={i}>
+            <motion.div
+              {...animation1}
+              transition={{ duration: 0.7, delay: 0.5 }}
+              className="accordion-item"
+              key={i}
+            >
               <h2 className="accordion-header">
                 <button
                   className="accordion-button collapsed"
@@ -63,7 +75,7 @@ const Faq = () => {
               >
                 <div className="accordion-body">{item.answer}</div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

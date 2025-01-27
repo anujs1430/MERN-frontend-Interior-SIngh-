@@ -39,6 +39,10 @@ const CustomerQuery = () => {
     }
   };
 
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
     <section>
       <h4>Customers Queries</h4>
@@ -58,27 +62,23 @@ const CustomerQuery = () => {
         </thead>
 
         <tbody>
-          {loading ? (
-            <Loader />
-          ) : (
-            response?.map((items, i) => (
-              <tr key={i}>
-                <td>{i + 1}</td>
-                <td>{items.name}</td>
-                <td>{items.email}</td>
-                <td>{items.phone}</td>
-                <td>{items.subject}</td>
-                <td>{items.comment}</td>
-                <td>{items.createdAt}</td>
-                <td>
-                  <MdDelete
-                    className="h3"
-                    onClick={() => deleteHandle(items._id)}
-                  />
-                </td>
-              </tr>
-            ))
-          )}
+          {response?.map((items, i) => (
+            <tr key={i}>
+              <td>{i + 1}</td>
+              <td>{items.name}</td>
+              <td>{items.email}</td>
+              <td>{items.phone}</td>
+              <td>{items.subject}</td>
+              <td>{items.comment}</td>
+              <td>{items.createdAt}</td>
+              <td>
+                <MdDelete
+                  className="h3"
+                  onClick={() => deleteHandle(items._id)}
+                />
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </section>

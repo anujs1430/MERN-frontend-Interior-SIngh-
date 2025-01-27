@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 const Header = () => {
   const [data, setData] = useState([]);
   const [refresh, setRefresh] = useState(true);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     axios
@@ -25,29 +26,23 @@ const Header = () => {
 
   const icons = [<IoLogoWhatsapp />, <FaFacebook />, <FaTwitter />];
 
-  $(window).scroll(function () {
-    var scroll = $(window).scrollTop();
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY >= 100) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
 
-    if (scroll >= 100) {
-      $(".top-nav").fadeOut();
-      $(".navbar").addClass("conditional-nav");
-    } else {
-      $(".top-nav").fadeIn();
-      $(".navbar").removeClass("conditional-nav");
-    }
-  });
+    // add event listener on scroll
+    window.addEventListener("scroll", handleScroll);
 
-  $(window).scroll(function () {
-    var scroll = $(window).scrollTop();
-
-    if (scroll >= 100) {
-      $(".top-nav").fadeOut();
-      $(".navbar").addClass("conditional-nav");
-    } else {
-      $(".top-nav").fadeIn();
-      $(".navbar").removeClass("conditional-nav");
-    }
-  });
+    // Cleanup listener on component unmount
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const animation1 = {
     initial: { x: "-100%", opacity: 0 },
@@ -59,7 +54,11 @@ const Header = () => {
 
   return (
     <>
-      <nav className={`top-nav ${data.isVisible === false ? "d-none" : ""}`}>
+      <nav
+        className={`top-nav ${data.isVisible === false ? "d-none" : ""} ${
+          isScrolled ? "d-none" : ""
+        }`}
+      >
         <div className="d-flex justify-content-between align-items-center">
           <motion.div {...animation1} className="d-flex gap-3">
             <p className="m-0">
@@ -88,7 +87,7 @@ const Header = () => {
       <nav
         className={`navbar navbar-expand-lg ${
           data.isVisible === false ? "d-none" : ""
-        }`}
+        } ${isScrolled ? "conditional-nav" : ""}`}
         style={{ backgroundColor: navbarBgColor }}
       >
         <div className="container">
@@ -97,11 +96,7 @@ const Header = () => {
             className="navbar-brand text-light"
             href="#"
           >
-            <img
-              src={`${serverPORT}${data.brandLogo}`}
-              alt="brand-logo"
-              width="200px"
-            />
+            <img src={`${serverPORT}${data.brandLogo}`} alt="brand-logo" />
           </motion.a>
           <button
             className="navbar-toggler"

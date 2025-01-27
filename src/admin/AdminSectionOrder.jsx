@@ -76,12 +76,7 @@ const AdminSectionOrder = () => {
     CustomeSection: <MdCreateNewFolder />,
   };
 
-  if (loading)
-    return (
-      <p>
-        <Loader />
-      </p>
-    );
+  if (loading) return <Loader />;
 
   return (
     <div>

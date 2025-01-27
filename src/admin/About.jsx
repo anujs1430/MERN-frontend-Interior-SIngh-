@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import SectionDisableFunc from "../components/SectionDisableFunc";
+import { FaEdit } from "react-icons/fa";
 
 const About = () => {
   const [aboutEditData, setAboutEditData] = useState({
@@ -13,6 +14,7 @@ const About = () => {
   });
 
   const [response, setResponse] = useState([]);
+  const [refresh, setRefresh] = useState([]);
 
   const aboutAPI = "http://localhost:8000/api/getAbout";
   const visibilityAPI = "http://localhost:8000/api/getAbout/visibility";
@@ -56,6 +58,8 @@ const About = () => {
 
       console.log("Form submitted successfully:", response.data);
 
+      setRefresh(!refresh);
+
       setAboutEditData({
         heading: "",
         paragraph: "",
@@ -80,11 +84,23 @@ const About = () => {
     axios
       .post(visibilityAPI, { isVisible: newVisibility })
       .then((res) => {
-        console.log(res.data.data);
+        // console.log(res.data.data);
+        toast.success(res.data.message);
+        setRefresh(!refresh);
       })
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const handleEdit = (section) => {
+    setAboutEditData({
+      heading: section.heading,
+      paragraph: section.paragraph,
+      mainImage: null,
+      subImage: null,
+      isVisible: true,
+    });
   };
 
   useEffect(() => {
@@ -92,11 +108,12 @@ const About = () => {
       .get(aboutAPI)
       .then((res) => {
         setResponse(res.data);
+        setRefresh(!refresh);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [aboutEditData, aboutVisibilityHandle]);
+  }, [refresh]);
 
   return (
     <div>
@@ -120,7 +137,6 @@ const About = () => {
                 onChange={handleFileChange}
                 name="mainImage"
                 ref={mainImageReff}
-                required
               />
             </div>
             <div className="mb-3">
@@ -135,7 +151,6 @@ const About = () => {
                 id="about_heading"
                 onChange={handleInputChange}
                 value={aboutEditData.heading}
-                required
               />
             </div>
           </div>
@@ -148,7 +163,6 @@ const About = () => {
                 onChange={handleFileChange}
                 name="subImage"
                 ref={subImageReff}
-                required
               />
             </div>
             <div className="mb-3">
@@ -163,7 +177,6 @@ const About = () => {
                 id="about_para"
                 onChange={handleInputChange}
                 value={aboutEditData.paragraph}
-                required
               />
             </div>
           </div>
@@ -183,6 +196,7 @@ const About = () => {
             <th>Heading</th>
             <th>Paragraph</th>
             <th>Section Visibility</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -208,6 +222,9 @@ const About = () => {
                 <span className="badge text-bg-primary">
                   Visibility: {items.isVisible === true ? "ONN" : "OFF"}
                 </span>
+              </td>
+              <td>
+                <FaEdit className="h4" onClick={() => handleEdit(items)} />
               </td>
             </tr>
           ))}

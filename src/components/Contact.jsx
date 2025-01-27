@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { motion } from "framer-motion";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -47,9 +48,21 @@ const Contact = () => {
     }
   };
 
+  const animation1 = {
+    initial: { x: "-100%", opacity: 0 },
+    whileInView: { x: 0, opacity: 1 },
+    transition: { duration: 0.5 },
+  };
+
+  const animation2 = {
+    initial: { y: "+100%", opacity: 0 },
+    whileInView: { y: 0, opacity: 1 },
+    transition: { duration: 0.5 },
+  };
+
   return (
     <section className="contact py-5 section-devider" id="contact">
-      <div className="text-center p-1">
+      <motion.div {...animation2} className="text-center p-1">
         <p className="text-theme m-0">
           <small>Contact Us</small>
         </p>
@@ -63,14 +76,14 @@ const Contact = () => {
             adipisci!
           </i>
         </p>
-      </div>
+      </motion.div>
       <div className="container mt-5">
         <div className="d-flex">
           <div className="card w-100">
             <div className="card-body">
               <form className="p-5" onSubmit={submitHandle}>
                 <div className="row">
-                  <div className="col-lg-6">
+                  <motion.div {...animation1} className="col-lg-6">
                     <div className="mb-3 w-100">
                       <label htmlFor="name" className="form-label">
                         Full Name
@@ -101,8 +114,12 @@ const Contact = () => {
                         required
                       />
                     </div>
-                  </div>
-                  <div className="col-lg-6">
+                  </motion.div>
+                  <motion.div
+                    {...animation1}
+                    transition={{ duration: 0.7, delay: 0.5 }}
+                    className="col-lg-6"
+                  >
                     <div className="mb-3 w-100">
                       <label htmlFor="email" className="form-label">
                         Email
@@ -132,9 +149,13 @@ const Contact = () => {
                         required
                       />
                     </div>
-                  </div>
+                  </motion.div>
                 </div>
-                <div className="form-floating mb-3">
+                <motion.div
+                  {...animation1}
+                  transition={{ duration: 0.7, delay: 0.9 }}
+                  className="form-floating mb-3"
+                >
                   <textarea
                     className="form-control"
                     placeholder="Leave a comment here"
@@ -144,12 +165,16 @@ const Contact = () => {
                     onChange={handleInputChange}
                   ></textarea>
                   <label htmlFor="floatingTextarea">Comments</label>
-                </div>
-                <div className="text-center">
+                </motion.div>
+                <motion.div
+                  {...animation1}
+                  transition={{ duration: 0.7, delay: 1.5 }}
+                  className="text-center"
+                >
                   <button type="submit" className="btn btn-primary">
                     Submit
                   </button>
-                </div>
+                </motion.div>
               </form>
             </div>
           </div>

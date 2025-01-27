@@ -1,12 +1,25 @@
 import React from "react";
 import { FaStar } from "react-icons/fa6";
+import { motion } from "framer-motion";
 
 const Testimonials = () => {
   const card = [1, 2, 3];
 
+  const animation1 = {
+    initial: { x: "-100%", opacity: 0 },
+    whileInView: { x: 0, opacity: 1 },
+    transition: { duration: 0.5 },
+  };
+
+  const animation2 = {
+    initial: { y: "+100%", opacity: 0 },
+    whileInView: { y: 0, opacity: 1 },
+    transition: { duration: 0.5 },
+  };
+
   return (
     <section className="testimonial section-devider py-5" id="testimonial">
-      <div className="text-center p-1">
+      <motion.div {...animation2} className="text-center p-1">
         <p className="text-theme m-0">
           <small>Testimonials</small>
         </p>
@@ -20,7 +33,7 @@ const Testimonials = () => {
             adipisci!
           </i>
         </p>
-      </div>
+      </motion.div>
       <div className="container">
         <div id="carouselExampleCaptions" className="carousel slide">
           <div className="carousel-indicators">
@@ -46,7 +59,7 @@ const Testimonials = () => {
             ></button>
           </div>
           <div className="carousel-inner">
-            <div className="carousel-item active">
+            <motion.div {...animation2} className="carousel-item active">
               <div className="row row-cols-1 row-cols-md-3 g-4">
                 {card.map((item, i) => (
                   <div className="col" key={i}>
@@ -83,7 +96,7 @@ const Testimonials = () => {
                   </div>
                 ))}
               </div>
-            </div>
+            </motion.div>
             <div className="carousel-item">
               <div className="row row-cols-1 row-cols-md-3 g-4">
                 {card.map((item, i) => (

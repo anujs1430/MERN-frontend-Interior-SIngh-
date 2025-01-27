@@ -3,6 +3,7 @@ import axios from "axios";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { motion } from "framer-motion";
 
 const Services = () => {
   const [data, setData] = useState([]);
@@ -28,6 +29,12 @@ const Services = () => {
     slidesToScroll: 1,
   };
 
+  const animation1 = {
+    initial: { y: "+100%", opacity: 0 },
+    whileInView: { y: "0", opacity: 1 },
+    transition: { duration: 0.5 },
+  };
+
   return (
     <section
       className={`services section-devider py-5 ${
@@ -35,7 +42,7 @@ const Services = () => {
       }`}
       id="services"
     >
-      <div className="text-center p-1">
+      <motion.div {...animation1} className="text-center p-1">
         <p className="text-theme m-0">
           <small>Services</small>
         </p>
@@ -49,11 +56,16 @@ const Services = () => {
             adipisci!
           </i>
         </p>
-      </div>
+      </motion.div>
       <div className="container mt-3">
         <Slider {...settings}>
           {data.map((items, i) => (
-            <div className="card" style={{ width: "22rem" }} key={i}>
+            <motion.div
+              {...animation1}
+              className="card"
+              style={{ width: "22rem" }}
+              key={i}
+            >
               <img
                 src={`${server}${items.image}`}
                 className="card-img-top m-auto"
@@ -66,7 +78,7 @@ const Services = () => {
                   <small>{items.description}</small>
                 </p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </Slider>
       </div>
